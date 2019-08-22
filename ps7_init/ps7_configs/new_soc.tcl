@@ -1,0 +1,1 @@
+set soc_name "xc7z030ffg676-2"

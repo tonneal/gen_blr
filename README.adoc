@@ -1,0 +1,74 @@
+
+== 安装docker
+
+
+
+bash 一键安装
+
+[source,bash]
+----
+curl -sSL https://get.daocloud.io/docker | sh
+----
+
+
+https://docs.docker.com/install/linux/docker-ce/ubuntu/["Ubuntu中安装",role=teal]
+
+https://www.runoob.com/docker/windows-docker-install.html["windows  中安装",role=teal]
+
+https://zhuanlan.zhihu.com/p/39187620["win10 wsl  中安装",role=teal]
+
+
+
+== 如何用docker编译工程
+
+[source,bash]
+----
+$ docker pull registry.cn-shenzhen.aliyuncs.com/cangcanglang/vivadosdk2017p2:latest # <1>
+$ git clone http://192.168.3.88/rau/gen_blr.git # <2>
+$ cd gen_blr
+$ git submodule init # <3>
+$ git submodule update --init --recursive # <4>
+$ docker run --rm -v $(pwd):/home/vivado/workspace vavitel/vivadosdk2017p2 make # <5>
+$ docker run --rm -v $(pwd):/home/vivado/workspace vavitel/vivadosdk2017p2 make clean # <6>
+----
+
+<1> pull vivado镜像
+<2> pull git 仓库
+<3> 初始化子模块
+<4> 下载子模块
+<5> 在容器中编译
+
+== 简化编译命令
+
+可以设置别名简化输入，docker后用table补全
+
+[source,bash]
+----
+$ alias docker_vivadosdk_2017p2='docker run --rm -v $(pwd):/home/vivado/workspace vavitel/vivadosdk2017p2'
+$ docker_vivadosdk_2017p2 make
+----
+
+== 如何配置
+[source,bash]
+----
+ps7_init
+├── apply_ps.tcl
+├── Makefile
+├── ps7_configs
+│   ├── new_config.tcl
+│   ├── new_soc.tcl
+│   ├── zc706_config.tcl
+│   ├── zc706_soc.tcl
+│   ├── zed_config.tcl
+│   ├── zed_soc.tcl
+│   ├── zqv3_config.tcl
+│   └── zqv3_soc.tcl
+└── zed_temp
+    ├── drivers.txt
+    ├── inbyte.c
+    ├── outbyte.c
+    └── xparameters.h
+----
+
+在ps7_init/ps7_config目录下参考zqv3_config.tcl  和 zqv3_soc.tcl，添加xxx_config.tcl和 xxx_soc.tcl 两个文件，xxx_config.tcl为vivado ps7 IP导出的配置，xxx_soc.tcl 为芯片配置，
+之后再把顶层文件夹中的Makefile中的zqv3改成xxx，就会按刚才新加的xxx进行编译。

@@ -1,0 +1,5 @@
+the_ROM_image:
+{
+	[bootloader]embeddedsw/lib/sw_apps/zynq_fsbl/src/fsbl.elf
+	u-boot/u-boot
+}

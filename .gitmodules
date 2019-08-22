@@ -1,0 +1,6 @@
+[submodule "embeddedsw"]
+	path = embeddedsw
+	url = ../embeddedsw
+[submodule "u-boot"]
+	path = u-boot
+	url = ../u-boot

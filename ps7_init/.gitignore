@@ -1,0 +1,4 @@
+*.jou
+*.log
+output/
+build/
